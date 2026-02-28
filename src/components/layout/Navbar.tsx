@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/context/ThemeContext";
 
 export function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -57,6 +59,24 @@ export function Navbar() {
                             {link.name}
                         </Link>
                     ))}
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className="relative w-9 h-9 flex items-center justify-center text-foreground/80 hover:text-secondary transition-colors rounded-full hover:bg-muted"
+                        aria-label="Toggle theme"
+                    >
+                        <AnimatePresence mode="wait" initial={false}>
+                            {theme === "dark" ? (
+                                <motion.span key="sun" initial={{ opacity: 0, rotate: -90, scale: 0.6 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.6 }} transition={{ duration: 0.2 }}>
+                                    <Sun size={18} />
+                                </motion.span>
+                            ) : (
+                                <motion.span key="moon" initial={{ opacity: 0, rotate: 90, scale: 0.6 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: -90, scale: 0.6 }} transition={{ duration: 0.2 }}>
+                                    <Moon size={18} />
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </button>
                     <Link
                         to="/reservations"
                         className="inline-flex items-center justify-center bg-secondary text-secondary-foreground hover:bg-secondary/90 uppercase tracking-widest text-xs px-8 py-4 h-12 rounded-none transition-colors"
@@ -66,12 +86,31 @@ export function Navbar() {
                 </div>
 
                 {/* Mobile Menu Toggle */}
-                <button
-                    className="md:hidden text-foreground hover:text-secondary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                    {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                </button>
+                <div className="md:hidden flex items-center gap-2">
+                    <button
+                        onClick={toggleTheme}
+                        className="relative w-9 h-9 flex items-center justify-center text-foreground/80 hover:text-secondary transition-colors"
+                        aria-label="Toggle theme"
+                    >
+                        <AnimatePresence mode="wait" initial={false}>
+                            {theme === "dark" ? (
+                                <motion.span key="sun-m" initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }} transition={{ duration: 0.2 }}>
+                                    <Sun size={18} />
+                                </motion.span>
+                            ) : (
+                                <motion.span key="moon-m" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.2 }}>
+                                    <Moon size={18} />
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </button>
+                    <button
+                        className="text-foreground hover:text-secondary transition-colors"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Dropdown */}

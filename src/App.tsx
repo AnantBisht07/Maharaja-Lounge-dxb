@@ -8,6 +8,7 @@ import { Menu } from "./pages/Menu";
 import { Gallery } from "./pages/Gallery";
 import { Reservations } from "./pages/Reservations";
 import { Contact } from "./pages/Contact";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   useEffect(() => {
@@ -34,19 +35,21 @@ function App() {
   }, []);
 
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-            <Route path="menu" element={<Menu />} />
-            <Route path="gallery" element={<Gallery />} />
-            <Route path="reservations" element={<Reservations />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </HelmetProvider>
+    <ThemeProvider>
+      <HelmetProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="menu" element={<Menu />} />
+              <Route path="gallery" element={<Gallery />} />
+              <Route path="reservations" element={<Reservations />} />
+              <Route path="contact" element={<Contact />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </HelmetProvider>
+    </ThemeProvider>
   );
 }
 
